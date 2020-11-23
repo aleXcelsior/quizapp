@@ -1,0 +1,20 @@
+.fillpage {
+  display: flex !important;
+  position: relative;
+  height: 100vh;
+  /* top: 15vh; */
+  align-items: center;
+  justify-content: center;
+  bottom: 7vh;
+}
+
+.quiz-container {
+  border-radius: 3vh;
+  width: 60vw;
+
+  box-shadow: 20px 20px 60px #3d85af, -20px -20px 60px #6dedff;
+}
+
+.bg-cont {
+  background: #55b9f3;
+}
