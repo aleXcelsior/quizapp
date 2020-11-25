@@ -13,12 +13,15 @@ const Quiz = (props) => {
   const [wrongAnswer, setWrongAnswer] = useState(false);
   const [points, setPoints] = useState(0); //Keeps track of the users current score
   const [startedPlaying, setStartedPlaying] = useState(false);
+  const [prevHighscore, setPrevHighscore] = useState("");
 
   const dispatch = useDispatch(); //Let's us dispatch actions
 
   //Ghetto restart - THIS REALLY NEEDS TO BE FIXED.....
   const history = useHistory();
-  const handleOnClick = useCallback(() => history.push("/login"), [history]);
+  const handleOnClick = useCallback(() => history.push("/dashboard"), [
+    history,
+  ]);
   //Ghetto restart - THIS REALLY NEEDS TO BE FIXED.....
 
   //Fetches the questions at startup (componentDidMount)
@@ -117,15 +120,22 @@ const Quiz = (props) => {
     }
   }
 
-  if (
-    typeof props.questions !== "undefined" &&
-    index + 1 <= props.questions.length
-  ) {
-    return <div>{renderQuiz()}</div>;
-  } else if (startedPlaying) {
+  function renderScore() {
+    if (prevHighscore === "") {
+      var getHighscore = localStorage.getItem("highscore");
+      setPrevHighscore(getHighscore);
+
+      if (points > getHighscore || typeof getHighscore === "undefined") {
+        localStorage.setItem("highscore", JSON.stringify(points));
+      }
+    }
+
+    console.log(prevHighscore, "<- prevHighscore");
+
     return (
       <div className="ui center aligned basic segment">
-        You got {points} points!
+        <h2>You got {points} points!</h2>
+        {prevHighscore !== null && <h3>Previous highscore: {prevHighscore}</h3>}
         <div>
           <button
             type="button"
@@ -137,6 +147,15 @@ const Quiz = (props) => {
         </div>
       </div>
     );
+  }
+
+  if (
+    typeof props.questions !== "undefined" &&
+    index + 1 <= props.questions.length
+  ) {
+    return <div>{renderQuiz()}</div>;
+  } else if (startedPlaying) {
+    return renderScore();
   } else {
     return (
       <div className="ui segment center aligned basic segment ">

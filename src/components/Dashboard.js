@@ -8,7 +8,11 @@ const Login = (props) => {
   return (
     <div className="ui center aligned basic segment">
       <h1>Welcome to some kind of dashboard, this will be fixed later..</h1>
-      <button type="button" onClick={startQuizButton}>
+      <button
+        className="ui green button"
+        type="button"
+        onClick={startQuizButton}
+      >
         Start quiz!
       </button>
     </div>
