@@ -12,17 +12,18 @@ const Quiz = (props) => {
   const [correctAnswer, setCorrectAnswer] = useState(false);
   const [wrongAnswer, setWrongAnswer] = useState(false);
   const [points, setPoints] = useState(0); //Keeps track of the users current score
-  const [startedPlaying, setStartedPlaying] = useState(false);
+  const [startedPlaying, setStartedPlaying] = useState(false); //Logic to know wether to show score or loading
   const [prevHighscore, setPrevHighscore] = useState("");
 
   const dispatch = useDispatch(); //Let's us dispatch actions
 
-  //Ghetto restart - THIS REALLY NEEDS TO BE FIXED.....
   const history = useHistory();
-  const handleOnClick = useCallback(() => history.push("/dashboard"), [
+  /* const handleOnClick = useCallback(() => history.push("/dashboard"), [
     history,
-  ]);
-  //Ghetto restart - THIS REALLY NEEDS TO BE FIXED.....
+  ]); */
+  function returnButton() {
+    history.push("/dashboard");
+  }
 
   //Fetches the questions at startup (componentDidMount)
   useEffect(() => {
@@ -53,7 +54,7 @@ const Quiz = (props) => {
       setTimeout(() => {
         setCorrectAnswer(false);
         setIndex((index) => index + 1);
-      }, 500);
+      }, 2000);
     } else {
       setCorrectAnswer(true); // highlights the right question if the user pressed the wrong answer
       setWrongAnswer(true); // highlights the wrong question if the user pressed the wrong answer
@@ -61,7 +62,7 @@ const Quiz = (props) => {
         setCorrectAnswer(false);
         setWrongAnswer(false);
         setIndex((index) => index + 1);
-      }, 500);
+      }, 2000);
     }
   };
 
@@ -130,8 +131,6 @@ const Quiz = (props) => {
       }
     }
 
-    console.log(prevHighscore, "<- prevHighscore");
-
     return (
       <div className="ui center aligned basic segment">
         <h2>You got {points} points!</h2>
@@ -140,7 +139,7 @@ const Quiz = (props) => {
           <button
             type="button"
             className="ui button blue "
-            onClick={handleOnClick}
+            onClick={returnButton}
           >
             Go back!
           </button>
